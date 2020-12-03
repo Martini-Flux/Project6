@@ -82,8 +82,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "the-hottest-reviews:build",
-            "disableHostCheck": true
+            "browserTarget": "the-hottest-reviews:build"
           },
           "configurations": {
             "production": {
@@ -160,6 +159,6 @@
   },
   "defaultProject": "the-hottest-reviews",
   "cli": {
-    "analytics": false
+    "analytics": "427aaf3c-bd0e-4bfb-b477-0eb94f52fbe4"
   }
 }
