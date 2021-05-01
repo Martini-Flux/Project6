@@ -8,6 +8,8 @@ const path = require('path');
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 
+// Connection à la base de données MongoDB.
+
 mongoose.connect('mongodb+srv://jeunedev:naruto09@sauces.vt0oh.mongodb.net/saucebase?retryWrites=true&w=majority',
   { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
   .then(() => console.log('Connexion à MongoDB réussie!'))
@@ -16,6 +18,8 @@ mongoose.connect('mongodb+srv://jeunedev:naruto09@sauces.vt0oh.mongodb.net/sauce
 const app = express();
 
 app.use(helmet());
+
+// Ajout des requêtes CORS.
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');

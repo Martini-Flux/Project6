@@ -1,6 +1,8 @@
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
+// Crée une sauce.
+
 exports.createSauce = (req, res) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
@@ -12,6 +14,8 @@ exports.createSauce = (req, res) => {
      .then(() => res.status(201).json({ message: 'Sauce enregistrée !'}))
      .catch(error => res.status(400).json({ error }));
 };
+
+// Modifie une sauce.
 
 exports.modifySauce = (req, res) => {
   const sauceObject = req.file ?
@@ -37,6 +41,8 @@ exports.modifySauce = (req, res) => {
    .catch(error => res.status(500).json({ error }));
 };
 
+// Supprime une sauce.
+
 exports.deleteSauce = (req, res) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
@@ -50,11 +56,15 @@ exports.deleteSauce = (req, res) => {
     .catch(error => res.status(500).json({ error }));
 };
 
+// Récupère une sauce.
+
 exports.getOneSauce = (req, res) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => res.status(200).json(sauce))
     .catch(error => res.status(404).json({ error }));
 };
+
+// Récupère toutes les sauces.
 
 exports.getAllSauces = (req, res) => {
   Sauce.find()
@@ -62,7 +72,12 @@ exports.getAllSauces = (req, res) => {
     .catch(error => res.status(400).json({ error }));
 };
 
+// Like/Dislike une sauce.
+
 exports.likeSauce = (req, res) => {
+
+  // Like.
+
   if (req.body.like === 1) {
     Sauce.updateOne({ _id: req.params.id }, {
       $set: { usersLiked: req.body.userId },
@@ -71,6 +86,8 @@ exports.likeSauce = (req, res) => {
       .then(() => res.status(200).json({ message: "L'utilisateur a liké la sauce !" }))
       .catch(error => res.status(400).json({ error }));
   }
+
+  // Dislike.
 
   if (req.body.like === -1) {
       Sauce.updateOne({ _id: req.params.id }, {
@@ -81,6 +98,8 @@ exports.likeSauce = (req, res) => {
         .catch(error => res.status(400).json({ error }));
   }
 
+  // Annulation.
+  
   if (req.body.like === 0) {
       Sauce.findOne({ _id: req.params.id })
         .then(sauce => {

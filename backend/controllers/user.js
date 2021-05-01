@@ -1,21 +1,29 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const passwordValidator = require('../middleware/password-validator');
 
+// Création d'un nouvel utilisateur
 
 exports.signup = (req, res) => {
-  bcrypt.hash(req.body.password, 10)
+  if (passwordValidator.validate(req.body.password)) { // Si le mot de passe est validé.
+  bcrypt.hash(req.body.password, 10) // Crypte le mot de passe.
   .then(hash => {
     const user = new User({
       email: req.body.email,
       password: hash
     });
-    user.save()
+    user.save() // Sauvegarde l'utilisateur dans la base de donnée.
       .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
       .catch(error => res.status(400).json({ message: 'Utilisateur déjà existant' }));
   })
   .catch(error => res.status(500).json({ error }));
+} else { // Si le mot de passe n'est pas validé.
+  res.status(400).json({ message: "Votre mot de passe doit contenir entre 6 et 30 caractères et comporter au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial." });
+  }
 };
+
+// Connexion d'un utilisateur
 
 exports.login = (req, res) => {
   User.findOne({ email: req.body.email })
